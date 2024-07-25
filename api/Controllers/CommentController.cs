@@ -19,7 +19,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAll()
         {
             var comments = await _commentRepo.GetAllAsync();
             var commentsDto = comments.Select(c => c.ToCommentDto());
@@ -27,5 +27,15 @@ namespace api.Controllers
             return Ok(commentsDto);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var comment = await _commentRepo.GetByIdAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(comment.ToCommentDto());
+        }
     }
 }
